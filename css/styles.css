@@ -111,6 +111,10 @@
 .totalPrice{
   color: rgb(168, 70, 86);
 }
+
+.itemTitle{
+  font-size: 15px;
+}
 /*///////////////////////////////////////*/
 
 body {
