@@ -115,6 +115,18 @@
 .itemTitle{
   font-size: 15px;
 }
+
+.buttonLocal{
+  font-style: italic;
+}
+
+.none{
+  visibility: hidden;
+}
+
+.visible{
+  visibility: visible;
+}
 /*///////////////////////////////////////*/
 
 body {
