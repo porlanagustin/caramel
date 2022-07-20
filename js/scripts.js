@@ -42,9 +42,8 @@ function showProducts(products) {
         <div class="card h-100">
             <img class="card-img-top" src="${product.image}" alt="${product.name}" />
             <div class="card-body p-4">
-                <div class="text-center">
+                <div id="price" class="text-center">
                     <h5 class="fw-bolder" id="name">${product.name}</h5>
-                    <span class="price">${product.price}</span>
                 </div>
             </div>
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
@@ -150,7 +149,7 @@ function addClicks(){
       }).showToast(); 
 
       countItems();
-      deleteLocal();
+      
       
 }
 
@@ -201,7 +200,6 @@ if(localStorage.getItem('cart') != undefined || localStorage.getItem('cart') != 
         containerLocal.innerHTML += contentLocal;
         cartItemsContainer.append(containerLocal);
     })
-    deleteLocal();
 }
 
 function specialOffer(){
@@ -228,6 +226,32 @@ function deleteLocal(){
         }, 10000);
 } */
 
+//Trabajando con Api//
 
+let productsApi;
+
+const apiUrl = 'https://api.mercadolibre.com/';
+const endpointProducts = 'sites/MLA/search';
+
+const getOfDatabase = () => {
+    fetch(apiUrl+endpointProducts+'?nickname=MEJORPRECIO.COM.AR')
+    .then((response) => response.json())
+    .then((data) => {
+        productsApi = data.results;
+        console.log(productsApi);
+        addPrice(productsApi);
+    })
+}
+
+getOfDatabase()
+
+const addPrice = (arrayPrice) => {
+    let itemPrice = ``;
+    arrayPrice.forEach((producto) => {
+        itemPrice += `<span>${producto.price}</span>`
+    });
+
+    document.getElementById("price").innerHTML = itemPrice;
+}
 
 
