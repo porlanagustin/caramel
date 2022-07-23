@@ -40,10 +40,12 @@ function showProducts(products) {
         divProduct.classList.add("mb-5");
         divProduct.innerHTML = `
         <div class="card h-100">
+            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
             <img class="card-img-top" src="${product.image}" alt="${product.name}" />
             <div class="card-body p-4">
-                <div id="price" class="text-center">
+                <div class="text-center">
                     <h5 class="fw-bolder" id="name">${product.name}</h5>
+                    <span class="price">${product.price}</span>
                 </div>
             </div>
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
@@ -55,6 +57,47 @@ function showProducts(products) {
 }
 
 showProducts(products);
+
+//Trabajando con Api//
+
+let productsApi;
+
+const apiUrl = 'https://api.mercadolibre.com/';
+const endpointProducts = 'sites/MLA/search';
+
+const getOfDatabase = () => {
+    fetch(apiUrl+endpointProducts+'?nickname=SWEET+MARKET')
+    .then((response) => response.json())
+    .then((data) => {
+        productsApi = data.results;
+        addCartFetch(productsApi); 
+    })
+}
+
+getOfDatabase()
+
+const addCartFetch = (arrayProducts) => {
+    let cardsFetch = ``;
+    arrayProducts.forEach((prodFetch) => {
+        cardsFetch += `<div class="col mb-5">
+        <div class="card h-100">
+            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+            <img class="card-img-top" src="${prodFetch.thumbnail}" alt="${prodFetch.name}" />
+            <div class="card-body p-4">
+                <div class="text-center">
+                    <h5 class="fw-bolder" id="name">${prodFetch.title}</h5>
+                    <span class="${prodFetch.price}">${prodFetch.price}</span>
+                </div>
+            </div>
+            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
+            </div>
+        </div>
+    </div>`
+    });
+
+    document.getElementById("fetch").innerHTML = cardsFetch;
+}
 
 //AGREGAR AL CARRITO//
 
@@ -150,7 +193,6 @@ function addClicks(){
 
       countItems();
       
-      
 }
 
 function countItems(){
@@ -209,49 +251,6 @@ function specialOffer(){
         icon: "error",
         button: "Seguir Buscando!",
       });
-}
-
-/*/Eliminar Local Storage//
-
-var timer = undefined;
-
-function deleteLocal(){
-        if(timer != undefined){
-            clearTimeout(timer);
-        }
-        timer = setTimeout(() =>{
-            localStorage.removeItem('cart');
-            document.getElementById("containerCart").style.display = "none";
-            
-        }, 10000);
-} */
-
-//Trabajando con Api//
-
-let productsApi;
-
-const apiUrl = 'https://api.mercadolibre.com/';
-const endpointProducts = 'sites/MLA/search';
-
-const getOfDatabase = () => {
-    fetch(apiUrl+endpointProducts+'?nickname=MEJORPRECIO.COM.AR')
-    .then((response) => response.json())
-    .then((data) => {
-        productsApi = data.results;
-        console.log(productsApi);
-        addPrice(productsApi);
-    })
-}
-
-getOfDatabase()
-
-const addPrice = (arrayPrice) => {
-    let itemPrice = ``;
-    arrayPrice.forEach((producto) => {
-        itemPrice += `<span>${producto.price}</span>`
-    });
-
-    document.getElementById("price").innerHTML = itemPrice;
 }
 
 
